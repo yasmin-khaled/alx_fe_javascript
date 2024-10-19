@@ -3,8 +3,22 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
       function loadQuotes() {
         quotes = JSON.parse(localStorage.getItem("quotes") || "[]");
+        populateCategories();
+        const lastSelectedCategory = localStorage.getItem('lastSelectedCategory');
+        const selectedQuote = quotes.filter(q => q.category === lastSelectedCategory);     
+        const randQuoteP = document.getElementsByTagName('p')[0];
+        randQuoteP.innerHTML = `<p>${selectedQuote[0]?.text}</p>`;
       }
     
+    function populateCategories(){
+        const categoriesList = document.getElementById('categoryFilter');
+        quotes.forEach(element => {
+            let option = document.createElement('option');
+            option.value = `"${element.category}"`;
+            option.textContent = `${element.category}`;
+            categoriesList.appendChild(option);
+        });
+    }
     const p = document.createElement('p');
     document.body.appendChild(p);
 
@@ -73,5 +87,15 @@ document.addEventListener("DOMContentLoaded", ()=>{
       function saveQuotes(){
         localStorage.setItem("quotes", JSON.stringify(quotes));
       }
+
+      const filterQuotes = document.getElementById('categoryFilter');
+      filterQuotes.addEventListener('change', (event) => {
+        const selectedCategory = event.target.value;
+        localStorage.setItem('lastSelectedCategory', selectedCategory); 
+        const selectedQuote = quotes.filter(q => q.category === selectedCategory);     
+        const randQuoteP = document.getElementsByTagName('p')[0];
+        randQuoteP.innerHTML = `<p>${selectedQuote[0]?.text}</p>`;
+      });
+      
     loadQuotes();
 });
