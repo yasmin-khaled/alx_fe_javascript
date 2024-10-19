@@ -146,6 +146,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
         if(updatedQuotes.length > 0){
             populateCategories();
         }
-        console.error('Quotes has been imported from server');
+        console.error("Quotes synced with server!");
     }
 });
