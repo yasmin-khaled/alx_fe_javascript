@@ -22,13 +22,36 @@ document.addEventListener("DOMContentLoaded", ()=>{
         }
       ];
     
+    const p = document.createElement('p');
+    document.body.appendChild(p);
+
     function showRandomQuote(){
         const randomNumber = Math.floor(Math.random() * 5) + 1;
-        const p = `<p>${quotes[randomNumber].text}</p>`;
-        document.body.innerHTML += p;
+        const randQuoteP = document.getElementsByTagName('p')[0];
+        randQuoteP.innerHTML = `<p>${quotes[randomNumber].text}</p>`;
     }
     
     function createAddQuoteForm(){
         
     }
+
+    function addQuote(){
+        const newQuoteText = document.getElementById('newQuoteText');
+        let newQuote = {
+            text: '',
+            category:''
+        }
+        if(newQuoteText){
+            newQuote.text = newQuoteText.text;
+        }
+
+        const newQuoteCategory = document.getElementById('newQuoteCategory');
+        if(newQuoteCategory){
+            newQuote.category = newQuoteCategory.text;
+        }
+        quotes.push(newQuote);
+    }
+
+    const newQuoteButton = document.getElementById('newQuote');
+    newQuoteButton.addEventListener('click', () => {showRandomQuote();});
 });
