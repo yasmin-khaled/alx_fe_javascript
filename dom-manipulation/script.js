@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
       }
     
     function populateCategories(){
-        const myMap = new Map();
+        const map = new Map();
         const categoriesList = document.getElementById('categoryFilter');
         quotes.forEach(element => {
             let option = document.createElement('option');
