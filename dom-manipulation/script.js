@@ -12,11 +12,15 @@ document.addEventListener("DOMContentLoaded", ()=>{
     
     function populateCategories(){
         const map = new Map();
+        quotes.forEach(q => {
+            map.set(q.category, q.category);
+        });
+
         const categoriesList = document.getElementById('categoryFilter');
-        quotes.forEach(element => {
+        map.forEach((key, value) => {
             let option = document.createElement('option');
-            option.value = `${element.category}`;
-            option.textContent = `${element.category}`;
+            option.value = key;
+            option.textContent = value;
             categoriesList.appendChild(option);
         });
     }
@@ -26,8 +30,6 @@ document.addEventListener("DOMContentLoaded", ()=>{
     function showRandomQuote(){
         if(quotes.length <= 0) return;
         const randomNumber = Math.floor(Math.random() * quotes.length);
-        console.log("ranf is");
-        console.log(randomNumber);
         const randQuoteP = document.getElementsByTagName('p')[0];
         randQuoteP.innerHTML = `<p>${quotes[randomNumber].text}</p>`;
     }
@@ -99,10 +101,42 @@ document.addEventListener("DOMContentLoaded", ()=>{
         randQuoteP.innerHTML = `<p>${selectedQuote[0].text}</p>`;
         for (let index = 1; index < selectedQuote.length; index++) {
             const newP = document.createElement('p');
-            randQuoteP.innerHTML = `<p>${selectedQuote[index].text}</p>`;
+            newP.innerHTML = `<p>${selectedQuote[index].text}</p>`;
             randQuoteP.insertAdjacentElement('afterend', newP);
         }  
       });
       
     loadQuotes();
+
+    async function importQuotesFromServer() {
+        try {
+            const response = await fetch('');
+            const importedQuotes = await response.json();
+            return importedQuotes.map(q => ({ text: q.text, category: q.category }));
+        } catch (error) {
+            console.error('Could not import the quotes:', error);
+            return [];
+        }
+    }
+
+    setInterval(async () => {
+        const importedQuotes = await importQuotesFromServer();
+    
+        const updatedQuotes = importedQuotes.filter(iq => {
+            quotes.find(q => q.hasOwnProperty(iq.text)) === 'undefined'
+        });
+
+        updatedQuotes.forEach(element => {
+            quotes.push(element);
+        });
+        localStorage.setItem("quotes", JSON.stringify(quotes));
+    
+        updatedQuotes = importedQuotes.filter(iq => {
+            quotes.find(q => q.hasOwnProperty(iq.category)) === 'undefined'
+        });
+        if(updatedQuotes.length > 0){
+            populateCategories();
+        }
+        console.error('Quotes has been imported from server');
+    }, 600000);
 });
