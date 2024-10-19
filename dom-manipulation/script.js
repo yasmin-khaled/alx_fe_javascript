@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
       
     loadQuotes();
 
-    async function importQuotesFromServer() {
+    async function fetchQuotesFromServer() {
         try {
             const response = await fetch('');
             const importedQuotes = await response.json();
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     }
 
     setInterval(async () => {
-        const importedQuotes = await importQuotesFromServer();
+        const importedQuotes = await fetchQuotesFromServer();
     
         const updatedQuotes = importedQuotes.filter(iq => {
             quotes.find(q => q.hasOwnProperty(iq.text)) === 'undefined'
