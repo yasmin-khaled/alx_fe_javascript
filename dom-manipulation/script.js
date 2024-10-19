@@ -93,9 +93,15 @@ document.addEventListener("DOMContentLoaded", ()=>{
       filterQuotes.addEventListener('change', (event) => {
         const selectedCategory = event.target.value;
         localStorage.setItem('lastSelectedCategory', selectedCategory); 
-        const selectedQuote = quotes.filter(q => q.category === selectedCategory);     
+        const selectedQuote = quotes.filter(q => q.category === selectedCategory);
+        const display = document.getElementById('quoteDisplay');
         const randQuoteP = document.getElementsByTagName('p')[0];
         randQuoteP.innerHTML = `<p>${selectedQuote[0].text}</p>`;
+        for (let index = 1; index < selectedQuote.length; index++) {
+            const newP = document.createElement('p');
+            randQuoteP.innerHTML = `<p>${selectedQuote[i].text}</p>`;
+            randQuoteP.insertAdjacentElement('afterend', newP);
+        }  
       });
       
     loadQuotes();
