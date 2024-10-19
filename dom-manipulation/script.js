@@ -110,7 +110,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     async function fetchQuotesFromServer() {
         try {
-            const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+            const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
             const importedQuotes = await response.json();
             return importedQuotes.map(q => ({ text: q.text, category: q.category }));
         } catch (error) {
