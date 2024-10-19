@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         randQuoteP.innerHTML = `<p>${selectedQuote[0].text}</p>`;
         for (let index = 1; index < selectedQuote.length; index++) {
             const newP = document.createElement('p');
-            randQuoteP.innerHTML = `<p>${selectedQuote[i].text}</p>`;
+            randQuoteP.innerHTML = `<p>${selectedQuote[index].text}</p>`;
             randQuoteP.insertAdjacentElement('afterend', newP);
         }  
       });
