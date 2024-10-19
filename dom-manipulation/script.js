@@ -11,10 +11,11 @@ document.addEventListener("DOMContentLoaded", ()=>{
       }
     
     function populateCategories(){
+        const myMap = new Map();
         const categoriesList = document.getElementById('categoryFilter');
         quotes.forEach(element => {
             let option = document.createElement('option');
-            option.value = `"${element.category}"`;
+            option.value = `${element.category}`;
             option.textContent = `${element.category}`;
             categoriesList.appendChild(option);
         });
@@ -94,7 +95,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
         localStorage.setItem('lastSelectedCategory', selectedCategory); 
         const selectedQuote = quotes.filter(q => q.category === selectedCategory);     
         const randQuoteP = document.getElementsByTagName('p')[0];
-        randQuoteP.innerHTML = `<p>${selectedQuote[0]?.text}</p>`;
+        randQuoteP.innerHTML = `<p>${selectedQuote[0].text}</p>`;
       });
       
     loadQuotes();
