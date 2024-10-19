@@ -117,7 +117,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
                 }
             });
             const importedQuotes = await response.json();
-            return importedQuotes.map(q => ({ text: q.text, category: q.category }));
+            console.log(importedQuotes);
+            return importedQuotes.map(q => ({ text: q.body, category: q.title }));
         } catch (error) {
             console.error('Could not import the quotes:', error);
             return [];
@@ -126,13 +127,13 @@ document.addEventListener("DOMContentLoaded", ()=>{
 
     setInterval(async () => {
         await syncQuotes();
-    }, 600000);
+    }, 10000);
 
     async function syncQuotes(){
         const importedQuotes = await fetchQuotesFromServer();
     
         const updatedQuotes = importedQuotes.filter(iq => {
-            quotes.find(q => q.hasOwnProperty(iq.text)) === 'undefined'
+            return !quotes.some(q => q.text === iq.text);
         });
 
         updatedQuotes.forEach(element => {
@@ -140,12 +141,12 @@ document.addEventListener("DOMContentLoaded", ()=>{
         });
         localStorage.setItem("quotes", JSON.stringify(quotes));
     
-        updatedQuotes = importedQuotes.filter(iq => {
-            quotes.find(q => q.hasOwnProperty(iq.category)) === 'undefined'
+        const updatedCategories = importedQuotes.filter(iq => {
+            return !quotes.some(q => q.category === iq.category);
         });
-        if(updatedQuotes.length > 0){
+        if(updatedCategories.length > 0){
             populateCategories();
         }
-        console.error("Quotes synced with server!");
+        console.log("Quotes synced with server!");
     }
 });
