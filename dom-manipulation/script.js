@@ -125,6 +125,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
     }
 
     setInterval(async () => {
+        await syncQuotes();
+    }, 600000);
+
+    async function syncQuotes(){
         const importedQuotes = await fetchQuotesFromServer();
     
         const updatedQuotes = importedQuotes.filter(iq => {
@@ -143,5 +147,5 @@ document.addEventListener("DOMContentLoaded", ()=>{
             populateCategories();
         }
         console.error('Quotes has been imported from server');
-    }, 600000);
+    }
 });
